@@ -1,27 +1,26 @@
-declare module 'cordova-plugin-camera-preview' {
-  type CameraPreviewErrorHandler = (err: any) => any;
-  type CameraPreviewSuccessHandler = (data: any) => any;
+type CameraPreviewErrorHandler = (err: any) => any;
+type CameraPreviewSuccessHandler = (data: any) => any;
 
-  type CameraPreviewCameraDirection = 'back'|'front';
-  type CameraPreviewColorEffect = 'aqua'|'blackboard'|'mono'|'negative'|'none'|'posterize'|'sepia'|'solarize'|'whiteboard';
-  type CameraPreviewExposureMode = 'lock'|'auto'|'continuous'|'custom';
-  type CameraPreviewFlashMode = 'off'|'on'|'auto'|'red-eye'|'torch';
-  type CameraPreviewFocusMode = 'fixed'|'auto'|'continuous'|'continuous-picture'|'continuous-video'|'edof'|'infinity'|'macro';
-  type CameraPreviewWhiteBalanceMode = 'lock'|'auto'|'continuous'|'incandescent'|'cloudy-daylight'|'daylight'|'fluorescent'|'shade'|'twilight'|'warm-fluorescent';
+type CameraPreviewCameraDirection = 'back'|'front';
+type CameraPreviewColorEffect = 'aqua'|'blackboard'|'mono'|'negative'|'none'|'posterize'|'sepia'|'solarize'|'whiteboard';
+type CameraPreviewExposureMode = 'lock'|'auto'|'continuous'|'custom';
+type CameraPreviewFlashMode = 'off'|'on'|'auto'|'red-eye'|'torch';
+type CameraPreviewFocusMode = 'fixed'|'auto'|'continuous'|'continuous-picture'|'continuous-video'|'edof'|'infinity'|'macro';
+type CameraPreviewWhiteBalanceMode = 'lock'|'auto'|'continuous'|'incandescent'|'cloudy-daylight'|'daylight'|'fluorescent'|'shade'|'twilight'|'warm-fluorescent';
 
-  interface CameraPreviewStartCameraOptions {
-    alpha?: number;
-    camera?: CameraPreviewCameraDirection|string;
-    height?: number;
-    previewDrag?: boolean;
-    tapFocus?: boolean;
-    tapPhoto?: boolean;
-    toBack?: boolean;
-    width?: number;
-    x?: number;
-    y?: number;
-    disableExifHeaderStripping?: boolean;
-  }
+interface CameraPreviewStartCameraOptions {
+  alpha?: number;
+  camera?: CameraPreviewCameraDirection|string;
+  height?: number;
+  previewDrag?: boolean;
+  tapFocus?: boolean;
+  tapPhoto?: boolean;
+  toBack?: boolean;
+  width?: number;
+  x?: number;
+  y?: number;
+  disableExifHeaderStripping?: boolean;
+}
 
 interface CameraPreviewTakePictureOptions {
   height?: number;
@@ -29,10 +28,10 @@ interface CameraPreviewTakePictureOptions {
   width?: number;
 }
 
-  interface CameraPreviewPreviewSizeDimension {
-    height?: number;
-    width?: number;
-  }
+interface CameraPreviewPreviewSizeDimension {
+  height?: number;
+  width?: number;
+}
 
 interface CameraPreview {
   startCamera(options?:CameraPreviewStartCameraOptions, onSuccess?:CameraPreviewSuccessHandler, onError?:CameraPreviewErrorHandler):void;
@@ -68,5 +67,4 @@ interface CameraPreview {
   getSupportedWhiteBalanceMode(onSuccess?:CameraPreviewSuccessHandler, onError?:CameraPreviewErrorHandler):void;
   setWhiteBalanceMode(whiteBalanceMode?:CameraPreviewWhiteBalanceMode|string, onSuccess?:CameraPreviewSuccessHandler, onError?:CameraPreviewErrorHandler):void;
   onBackButton(onSuccess?:CameraPreviewSuccessHandler, onError?:CameraPreviewErrorHandler):void;
-}
 }
