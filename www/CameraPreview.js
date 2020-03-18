@@ -11,55 +11,27 @@ function isFunction(obj) {
 };
 
 CameraPreview.startCamera = function(options, onSuccess, onError) {
-  if (!options) {
-    options = {};
-  } else if (isFunction(options)) {
-    onSuccess = options;
-    options = {};
-  }
-
-  options.x = options.x || 0;
-  options.y = options.y || 0;
-
-  options.width = options.width || window.screen.width;
-  options.height = options.height || window.screen.height;
-
-  options.camera = options.camera || CameraPreview.CAMERA_DIRECTION.FRONT;
-
-  if (typeof(options.tapPhoto) === 'undefined') {
-    options.tapPhoto = true;
-  }
+    options = options || {};
+    options.x = options.x || 0;
+    options.y = options.y || 0;
+    options.width = options.width || window.screen.width;
+    options.height = options.height || window.screen.height;
+    options.camera = options.camera || CameraPreview.CAMERA_DIRECTION.FRONT;
+    if (typeof(options.tapPhoto) === 'undefined') {
+        options.tapPhoto = true;
+    }
 
   if (typeof (options.tapFocus) == 'undefined') {
     options.tapFocus = false;
   }
 
-  options.previewDrag = options.previewDrag || false;
-
-  options.toBack = options.toBack || false;
-
-  if (typeof(options.alpha) === 'undefined') {
-    options.alpha = 1;
-  }
-
-  options.disableExifHeaderStripping = options.disableExifHeaderStripping || false;
-
-  options.storeToFile = options.storeToFile || false;
-
-  exec(onSuccess, onError, PLUGIN_NAME, "startCamera", [
-    options.x, 
-    options.y, 
-    options.width, 
-    options.height, 
-    options.camera, 
-    options.tapPhoto, 
-    options.previewDrag, 
-    options.toBack, 
-    options.alpha, 
-    options.tapFocus, 
-    options.disableExifHeaderStripping, 
-    options.storeToFile
-  ]);
+    options.previewDrag = options.previewDrag || false;
+    options.toBack = options.toBack || false;
+    if (typeof(options.alpha) === 'undefined') {
+        options.alpha = 1;
+    }
+    options.disableExifHeaderStripping = options.disableExifHeaderStripping || false;
+    exec(onSuccess, onError, PLUGIN_NAME, "startCamera", [options.x, options.y, options.width, options.height, options.camera, options.tapPhoto, options.previewDrag, options.toBack, options.alpha, options.tapFocus, options.disableExifHeaderStripping]);
 };
 
 CameraPreview.stopCamera = function(onSuccess, onError) {
@@ -75,26 +47,7 @@ CameraPreview.hide = function(onSuccess, onError) {
 };
 
 CameraPreview.show = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "showCamera", []);
-};
-
-CameraPreview.takeSnapshot = function(opts, onSuccess, onError) {
-  if (!opts) {
-    opts = {};
-  } else if (isFunction(opts)) {
-    onSuccess = opts;
-    opts = {};
-  }
-
-  if (!isFunction(onSuccess)) {
-    return false;
-  }
-
-  if (!opts.quality || opts.quality > 100 || opts.quality < 0) {
-    opts.quality = 85;
-  }
-
-  exec(onSuccess, onError, PLUGIN_NAME, "takeSnapshot", [opts.quality]);
+    exec(onSuccess, onError, PLUGIN_NAME, "showCamera", []);
 };
 
 CameraPreview.takePicture = function(opts, onSuccess, onError) {
@@ -116,7 +69,16 @@ CameraPreview.takePicture = function(opts, onSuccess, onError) {
     opts.quality = 85;
   }
 
-  exec(onSuccess, onError, PLUGIN_NAME, "takePicture", [opts.width, opts.height, opts.quality]);};
+    exec(onSuccess, onError, PLUGIN_NAME, "takePicture", [opts.width, opts.height, opts.quality]);
+};
+
+CameraPreview.startRecordVideo = function(params, onSuccess, onError) {
+    exec(onSuccess, onError, PLUGIN_NAME, "startRecordVideo", [params.cameraDirection, params.width, params.height, params.quality, params.withFlash]);
+};
+
+CameraPreview.stopRecordVideo = function(onSuccess, onError) {
+    exec(onSuccess, onError, PLUGIN_NAME, "stopRecordVideo", []);
+};
 
 CameraPreview.setColorEffect = function(effect, onSuccess, onError) {
   exec(onSuccess, onError, PLUGIN_NAME, "setColorEffect", [effect]);
@@ -218,62 +180,8 @@ CameraPreview.setWhiteBalanceMode = function(whiteBalanceMode, onSuccess, onErro
   exec(onSuccess, onError, PLUGIN_NAME, "setWhiteBalanceMode", [whiteBalanceMode]);
 };
 
-CameraPreview.getCameraCharacteristics = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getCameraCharacteristics", []);
-};
-
 CameraPreview.onBackButton = function(onSuccess, onError) {
   exec(onSuccess, onError, PLUGIN_NAME, "onBackButton");
-};
-
-CameraPreview.getBlob = function (url, onSuccess, onError) {
-  var xhr = new XMLHttpRequest
-  xhr.onload = function() {
-    if (xhr.status != 0 && (xhr.status < 200 || xhr.status >= 300)) {
-      if (isFunction(onError)) {
-        onError('Local request failed');
-      }
-      return;
-    }
-    var blob = new Blob([xhr.response], {type: "image/jpeg"});
-    if (isFunction(onSuccess)) {
-      onSuccess(blob);
-    }
-  };
-  xhr.onerror = function() {
-    if (isFunction(onError)) {
-      onError('Local request failed');
-    }
-  };
-  xhr.open('GET', url);
-  xhr.responseType = 'arraybuffer';
-  xhr.send(null);
-};
-
-CameraPreview.startRecordVideo = function (opts, onSuccess, onError) {
-  if (!opts) {
-    opts = {};
-  } else if (isFunction(opts)) {
-    onSuccess = opts;
-    opts = {};
-  }
-
-  if (!isFunction(onSuccess)) {
-    return false;
-  }
-
-  opts.width = opts.width || 0;
-  opts.height = opts.height || 0;
-
-  if (!opts.quality || opts.quality > 100 || opts.quality < 0) {
-    opts.quality = 85;
-  }
-
-  exec(onSuccess, onError, PLUGIN_NAME, "startRecordVideo", [opts.cameraDirection, opts.width, opts.height, opts.quality, opts.withFlash]);
-};
-
-CameraPreview.stopRecordVideo = function (onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "stopRecordVideo");
 };
 
 CameraPreview.FOCUS_MODE = {
